@@ -1,0 +1,9 @@
+{
+  "name": "webrtc",
+  "version": "0.0.1",
+  "description": "First webrtc app",
+  "main": "index.js",
+  "scripts": {
+    "start" : "https-server . && node ./server.js"
+  }
+}
