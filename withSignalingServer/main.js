@@ -22,7 +22,8 @@ if(!userName) {
 userNameDiv.innerText = `Username: ${userName}`
 
 let connectedUser
-const wsAddress = 'ws://localhost:9090'
+// const wsAddress = 'ws://localhost:9090'
+const wsAddress = 'ws://54.229.47.155:9090'
 let wsConnection = new WebSocket(wsAddress);
 wsConnection.onopen = () => {
   console.log(`Websocket connection opened to ${wsAddress}`)
@@ -34,7 +35,7 @@ wsConnection.onopen = () => {
   startButton.disabled = false
 }
 
-startButton.onclick = createConnection;
+startButton.onclick = () => {createConnection()}
 sendButton.onclick = sendData;
 closeButton.onclick = closeDataChannels;
 createOfferButton.onclick = createOffer
