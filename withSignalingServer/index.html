@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <title>Transmit text</title>
+
+    <!-- <link rel="stylesheet" href="../../../css/main.css"> -->
+    <link rel="stylesheet" href="main.css"/>
+
+</head>
+
+<body>
+
+<div id="container">
+        <div id="username"></div>
+    <div id="buttons">
+        <button id="startButton">Start</button>
+        <button id="sendButton">Send</button>
+        <!-- <button id="sendToAllButton">Send to all</button> -->
+        <button id="closeButton">Stop</button>
+    </div>
+
+    <div>
+        <button id="createOffer">Create offer</button>
+        <input id="sendToUser" placeholder="Norbi"/>
+    </div>
+
+    <div id="sendReceive">
+        <div id="send">
+            <h2>Send</h2>
+            <textarea id="dataChannelSend"
+                      placeholder="Press Start, enter some text, then press Send."></textarea>
+        </div>
+        <div id="receive">
+            <h2>Receive</h2>
+            <textarea id="dataChannelReceive" disabled></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+<script src="main.js" async></script>
+
+<!-- <script src="../../../js/lib/ga.js"></script> -->
+
+</body>
+</html>

@@ -5,5 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start" : "https-server . && node ./server.js"
+  },
+  "dependencies": {
+    "wscat": "^4.0.1"
   }
 }
