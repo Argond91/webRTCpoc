@@ -10,7 +10,7 @@ const sendButton = document.querySelector('button#sendButton');
 const closeButton = document.querySelector('button#closeButton');
 const createOfferButton = document.querySelector('button#createOffer');
 startButton.disabled = true
-const servers = null;
+let servers = null;
 
 let userNameDiv = document.querySelector('div#username');
 let sendToUser = document.querySelector('input#sendToUser');
@@ -23,7 +23,7 @@ userNameDiv.innerText = `Username: ${userName}`
 
 let connectedUser
 // const wsAddress = 'ws://localhost:9090'
-const wsAddress = 'ws://54.229.47.155:9090'
+const wsAddress = 'ws://34.255.190.204:9090'
 let wsConnection = new WebSocket(wsAddress);
 wsConnection.onopen = () => {
   console.log(`Websocket connection opened to ${wsAddress}`)
@@ -42,14 +42,42 @@ createOfferButton.onclick = createOffer
 
 function createConnection(otherUser = null) {
   dataChannelSend.placeholder = '';
-  window.myConnection = myConnection = new RTCPeerConnection(servers);
+//   const configuration = {
+//     "iceServers": [{
+//         "urls": "stun:stunserver.example.org"
+// }]
+// }
+//   const configuration = {
+//     "iceServers": [{
+//         "urls": "stun:stun2.1.google.com:19302"
+// }]
+// }
+  const configuration = {
+    "iceServers": [{
+        "urls": "stun:stun.l.google.com:19302"
+}]
+}
+  window.myConnection = myConnection = new RTCPeerConnection(configuration);
   console.log('Created my local peer connection object myConnection');
 
-  sendChannel = myConnection.createDataChannel('sendDataChannel');
+  sendChannel = myConnection.createDataChannel('sendDataChannel')
+//   sendChannel = myConnection.createDataChannel('sendDataChannel', {
+//     reliable: true
+// });
   window.sendChannel = sendChannel
   console.log('Created send data channel');
 
+  // if(otherUser){
+ 
   myConnection.onicecandidate = e => {
+    if (e && e.target && e.target.iceGatheringState === 'complete') {
+      console.log('done gathering candidates - got iceGatheringState complete');
+  } else if (e && e.candidate == null) {
+      console.log('done gathering candidates - got null candidate');
+  } else {
+        console.log(e.target.iceGatheringState, e);   
+  }
+
     if (e.candidate) {
       send({
           type: "candidate",
@@ -58,7 +86,8 @@ function createConnection(otherUser = null) {
           otherUser: otherUser ? otherUser : sendToUser.value ? sendToUser.value : "Norbi"
       })
   }
-  };
+  // }
+}
   sendChannel.onopen = onSendChannelStateChange;
   sendChannel.onclose = onSendChannelStateChange;
   sendChannel.onmessage = event => {
@@ -173,20 +202,6 @@ async function handleWsMessage(msg) {
       console.log('connecting with user: ', connectedUser)
       if(!myConnection) {
         createConnection(data.name)
-        // console.log('Creating RTCPeerConnection after received offer')
-        // window.myConnection = myConnection = new RTCPeerConnection(servers);
-        // myConnection.onicecandidate = e => {
-        //   if (e.candidate) {
-        //     send({
-        //         type: "candidate",
-        //         candidate: e.candidate,
-        //         name: userName,
-        //         otherUser: data.name
-        //     })
-        // }
-        // };
-        // sendChannel.onopen = onSendChannelStateChange;
-        // sendChannel.onclose = onSendChannelStateChange;
       }
       else {
         console.log('Already had myConnection when offer came in')
